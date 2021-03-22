@@ -34,6 +34,37 @@ matrix:
       - export CC=clang-4.0
       - export CXX=clang++-4.0
 
+# Added power support and excluding osx as mac is not supported.
+
+  - language: java
+    jdk: openjdk8
+    arch: ppc64le
+    env:
+    - MAVEN_OPTS=-Xmx2g MAVEN_SKIP_RC=true
+    script:
+    - cd java
+    - mvn -Panalyze clean package
+    - mvn apache-rat:check
+
+  - language: cpp
+    compiler: gcc
+    os: linux
+    arch: ppc64le
+
+  - language: cpp
+    arch: ppc64le
+    compiler: clang
+    os: linux
+    addons:
+      apt:
+         sources:
+           - llvm-toolchain-trusty-4.0
+         packages:
+           - clang-4.0
+    before_script:
+      - export CC=clang-4.0
+      - export CXX=clang++-4.0
+
   - language: cpp
     compiler: clang
     os: osx
